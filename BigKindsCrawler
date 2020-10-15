@@ -155,62 +155,62 @@ class Big_Kinds_Crawler(object):
             if '국민일보' in self.news_press[url_count - fail_count]:
                 if soup.select_one('#articleBody')  == None:
                     self.delete(url_count - fail_count)
-                    fail_count += 1;
+                    fail_count += 1
                 else:
                     self.news_main_text.append(self.preprocess(soup.select_one('#articleBody').get_text().replace('\n', ' ').replace('\t', ' ')))
             elif '내일신문' in self.news_press[url_count - fail_count]:
                 if soup.select_one('#contents > p')  == None:
                     self.delete(url_count - fail_count)
-                    fail_count += 1;
+                    fail_count += 1
                 else:
                     self.news_main_text.append(self.preprocess(soup.select_one('#contents > p').get_text().replace('\n', ' ').replace('\t', ' ')))
             elif '동아일보' in self.news_press[url_count - fail_count]:
                 if soup.select_one('#content > div > div.article_txt')  == None:
                     self.delete(url_count - fail_count)
-                    fail_count += 1;
+                    fail_count += 1
                 else:
                     self.news_main_text.append(self.preprocess(soup.select_one('#content > div > div.article_txt').get_text().replace('\n', ' ').replace('\t', ' ')))
             elif '문화일보' in self.news_press[url_count - fail_count]:
                 if soup.select_one('#NewsAdContent')  == None:
                     self.delete(url_count - fail_count)
-                    fail_count += 1;
+                    fail_count += 1
                 else:
                     self.news_main_text.append(self.preprocess(soup.select_one('#NewsAdContent').get_text().replace('\n', ' ').replace('\t', ' ')))
             elif '서울신문' in self.news_press[url_count - fail_count]:
                 if 'go' in self.news_url[url_count - fail_count]:
                     if soup.select_one('#article_content')  == None:
                         self.delete(url_count - fail_count)
-                        fail_count += 1;
+                        fail_count += 1
                     else:
                         self.news_main_text.append(self.preprocess(soup.select_one('#article_content').get_text().replace('\n', ' ').replace('\t', ' ')))
                 elif 'now' in self.news_url[url_count - fail_count]:
                     if soup.select_one('#articleContent')  == None:
                         self.delete(url_count - fail_count)
-                        fail_count += 1;
+                        fail_count += 1
                     else:
                         self.news_main_text.append(self.preprocess(soup.select_one('#articleContent').get_text().replace('\n', ' ').replace('\t', ' ')))
                 elif 'stv' in self.news_url[url_count - fail_count]:
                     if soup.select_one('#CmAdContent')  == None:
                         self.delete(url_count - fail_count)
-                        fail_count += 1;
+                        fail_count += 1
                     else:
                         self.news_main_text.append(self.preprocess(soup.select_one('#CmAdContent').get_text().replace('\n', ' ').replace('\t', ' ')))
                 elif 'biz' in soup.select_one('link').get('href'):
                     if soup.select_one('body > div > div.middleWrap > div > div.mLeftWrap > div.articleDiv')  == None:
                         self.delete(url_count - fail_count)
-                        fail_count += 1;
+                        fail_count += 1
                     else:
                         self.news_main_text.append(self.preprocess(soup.select_one('body > div > div.middleWrap > div > div.mLeftWrap > div.articleDiv').get_text().replace('\n', ' ').replace('\t', ' ')))
                 else:
                     if soup.select_one('#atic_txt1')  == None:
                         self.delete(url_count - fail_count)
-                        fail_count += 1;
+                        fail_count += 1
                     else:
                         self.news_main_text.append(self.preprocess(soup.select_one('#atic_txt1').get_text().replace('\n', ' ').replace('\t', ' ')))
             elif '세계일보' in self.news_press[url_count - fail_count]:
                 if soup.select_one('#article_txt > article')  == None:
                         self.delete(url_count - fail_count)
-                        fail_count += 1;
+                        fail_count += 1
                 else:
                     self.news_main_text.append(self.preprocess(soup.select_one('#article_txt > article').get_text().replace('\n', ' ').replace('\t', ' ')))
             #elif '조선일보' in self.news_press[url_count - fail_count]:
@@ -218,19 +218,19 @@ class Big_Kinds_Crawler(object):
             elif '중앙일보' in self.news_press[url_count - fail_count]:
                 if soup.select_one('#article_body')  == None:
                         self.delete(url_count - fail_count)
-                        fail_count += 1;
+                        fail_count += 1
                 else:
                     self.news_main_text.append(self.preprocess(soup.select_one('#article_body').get_text().replace('\n', ' ').replace('\t', ' ')))
             elif '한겨레' in self.news_press[url_count - fail_count]:
                     if soup.select_one('div.article-text > div > div.text') == None:
                         self.delete(url_count - fail_count)
-                        fail_count += 1;
+                        fail_count += 1
                     else :
                         self.news_main_text.append(self.preprocess(soup.select_one('div.article-text > div > div.text').get_text().replace('\n', ' ').replace('\t', ' ')))
             elif '한국일보' in self.news_press[url_count - fail_count]:
                 if soup.select_one('body > div.wrap > div.container.end > div > div > div > p')  == None:
                         self.delete(url_count - fail_count)
-                        fail_count += 1;
+                        fail_count += 1
                 else:
                     text = ""
                     result_set = soup.select('body > div.wrap > div.container.end > div > div > div > p')
