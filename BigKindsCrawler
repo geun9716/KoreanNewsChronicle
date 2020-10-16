@@ -4,6 +4,7 @@ import time
 import requests
 import re
 import csv
+import datetime
 
 class Big_Kinds_Crawler(object):
     def __init__(self):
@@ -15,7 +16,9 @@ class Big_Kinds_Crawler(object):
 
     @staticmethod
     def preprocess(text):
-        text = re.sub('<.+?>|&nbsp;|▲|◆', '', str(text))    # <> 안 내용, &nbsp;(개행) 제거
+        text = re.sub('<.+?>|&nbsp;|br|▲|◆|▶|■|○|△|□', '', str(text))    # <> 안 내용, &nbsp;(개행) 제거
+        text = text.replace("\n", "")
+        text = text.strip()
         return text
 
     def delete(self, url_count):
@@ -32,6 +35,12 @@ class Big_Kinds_Crawler(object):
 
         driver.implicitly_wait(1)
 
+        # 팝업 창 닫기
+        html_popup = driver.page_source
+        soup_popup = BeautifulSoup(html_popup, 'html.parser')
+        if soup_popup.select('#contents > div.popup-container') != None:
+            driver.find_element_by_css_selector('div.popup-footer > div > div > button').click()
+            
         # 기간 설정
         driver.find_element_by_id('date-filter-btn').click()    # 기간 버튼
         #driver.find_element_by_css_selector('#date-filter-div > div > div:nth-child(1) > button:nth-child(1)').click() # 1일 버튼
@@ -50,10 +59,10 @@ class Big_Kinds_Crawler(object):
         #driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(1) > div > button:nth-child(1)').click()    # 경향
         #driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(2)').click()    # 국민
         #driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(3)').click()    # 내일
-        driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(4)').click()    # 동아
+        #driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(4)').click()    # 동아
         #driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(5)').click()    # 문화
         #driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(6)').click()    # 서울
-        #driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(7)').click()    # 세계
+        driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(7)').click()    # 세계
         #driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(8)').click()    # 조선
         #driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(9)').click()    # 중앙
         #driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(10)').click()   # 한겨레
@@ -111,7 +120,7 @@ class Big_Kinds_Crawler(object):
                     time.sleep(2)
                     driver.find_element_by_css_selector('#news-results-pagination > ul > li:nth-child(3) > a').click()'''
 
-            time.sleep(1)
+            time.sleep(2)
 
             url = [] # 페이지 별 기사들의 url
             press = []  # 페이지 별 기사들의 언론사
@@ -128,24 +137,18 @@ class Big_Kinds_Crawler(object):
             for w in range(0, len(url)):
                 self.news_url.append(url[w].get('href'))
             for x in range(0, len(press)):
-                self.news_press.append(press[x].get_text())
+                self.news_press.append(press[x].text)
             for y in range(0, len(date)):
-                if 'Invalid' in date[y].get_text().strip():
+                if 'Invalid' in date[y].text.strip():
                     continue
-                self.news_headline.append(self.preprocess(headline[y].get_text).replace('\n', '').replace('\t', '').replace('>', '').strip())
-                self.news_date.append(date[y].get_text().strip())
+                self.news_headline.append((headline[y].text).replace('>', '').strip())
+                self.news_date.append(date[y].text.strip())
 
-            '''print("{}페이지".format(page))
-            print("url 개수: {} vs {}".format(len(url), len(self.news_url)))
-            print("headline 개수: {} vs {}".format(len(headline), len(self.news_headline)))
-            #print("maintext 개수: {}\n".format(main_text))
-            print("press 개수: {} vs {}".format(len(press), len(self.news_press)))
-            print("date 개수: {} vs {}".format(len(date), len(self.news_date)))'''
         driver.close()
 
     def crawl_news_text(self):  # 긁어온 url들 들어가서 뉴스 본문 긁기
-        fail_count = 0
-        for url_count  in range(0, len(self.news_url)):
+        fail_count = 0  # url에 본문 내용이 없을 때 count
+        for url_count  in range(0, len(self.news_url)): # 빅카인즈에서 긁어온 url 수만큼 반
             url_html = requests.get(self.news_url[url_count - fail_count]).content
             soup = BeautifulSoup(url_html, 'html.parser')
             print(self.news_url[url_count - fail_count])
@@ -153,89 +156,110 @@ class Big_Kinds_Crawler(object):
             #if '경향신문' in self.news_press[url_count]:
             #    self.news_main_text.append(self.preprocess(soup.select_one('#articleBody').get_text()))
             if '국민일보' in self.news_press[url_count - fail_count]:
-                if soup.select_one('#articleBody')  == None:
-                    self.delete(url_count - fail_count)
+                tag = soup.select_one('#articleBody')
+                if tag == None:    # url에 본문 내용 없을 때
+                    self.delete(url_count - fail_count) # 모든 list에서 해당 url에 대한 정보 삭제
                     fail_count += 1
                 else:
-                    self.news_main_text.append(self.preprocess(soup.select_one('#articleBody').get_text().replace('\n', ' ').replace('\t', ' ')))
+                    self.news_main_text.append(self.preprocess(tag.text))
             elif '내일신문' in self.news_press[url_count - fail_count]:
-                if soup.select_one('#contents > p')  == None:
+                tag = soup.select_one('#contents > p')
+                if tag == None:
                     self.delete(url_count - fail_count)
                     fail_count += 1
                 else:
-                    self.news_main_text.append(self.preprocess(soup.select_one('#contents > p').get_text().replace('\n', ' ').replace('\t', ' ')))
+                    self.news_main_text.append(self.preprocess(tag.text))
             elif '동아일보' in self.news_press[url_count - fail_count]:
-                if soup.select_one('#content > div > div.article_txt')  == None:
+                tag = soup.select_one('#content > div > div.article_txt')
+                if tag == None:
                     self.delete(url_count - fail_count)
                     fail_count += 1
                 else:
-                    self.news_main_text.append(self.preprocess(soup.select_one('#content > div > div.article_txt').get_text().replace('\n', ' ').replace('\t', ' ')))
+                    for span in tag.select('span'):
+                        span.decompose()
+                    for ul in tag.select('ul'):
+                        ul.decompose()
+                    for strong in tag.select('strong'):
+                        strong.decompose()
+                    for a in tag.select('a'):
+                        a.decompose()
+                    self.news_main_text.append(self.preprocess(tag.text))
             elif '문화일보' in self.news_press[url_count - fail_count]:
-                if soup.select_one('#NewsAdContent')  == None:
+                tag = soup.select_one('#NewsAdContent')
+                if  tag == None:
                     self.delete(url_count - fail_count)
                     fail_count += 1
                 else:
-                    self.news_main_text.append(self.preprocess(soup.select_one('#NewsAdContent').get_text().replace('\n', ' ').replace('\t', ' ')))
+                    self.news_main_text.append(self.preprocess(tag.text))
             elif '서울신문' in self.news_press[url_count - fail_count]:
                 if 'go' in self.news_url[url_count - fail_count]:
-                    if soup.select_one('#article_content')  == None:
+                    tag = soup.select_one('#article_content')
+                    if tag == None:
                         self.delete(url_count - fail_count)
                         fail_count += 1
                     else:
-                        self.news_main_text.append(self.preprocess(soup.select_one('#article_content').get_text().replace('\n', ' ').replace('\t', ' ')))
+                        self.news_main_text.append(self.preprocess(tag.text))
                 elif 'now' in self.news_url[url_count - fail_count]:
-                    if soup.select_one('#articleContent')  == None:
+                    tag = soup.select_one('#articleContent')
+                    if tag == None:
                         self.delete(url_count - fail_count)
                         fail_count += 1
                     else:
-                        self.news_main_text.append(self.preprocess(soup.select_one('#articleContent').get_text().replace('\n', ' ').replace('\t', ' ')))
+                        self.news_main_text.append(self.preprocess(tag.text))
                 elif 'stv' in self.news_url[url_count - fail_count]:
-                    if soup.select_one('#CmAdContent')  == None:
+                    tag = soup.select_one('#CmAdContent')
+                    if tag == None:
                         self.delete(url_count - fail_count)
                         fail_count += 1
                     else:
-                        self.news_main_text.append(self.preprocess(soup.select_one('#CmAdContent').get_text().replace('\n', ' ').replace('\t', ' ')))
+                        self.news_main_text.append(self.preprocess(tag.text))
                 elif 'biz' in soup.select_one('link').get('href'):
-                    if soup.select_one('body > div > div.middleWrap > div > div.mLeftWrap > div.articleDiv')  == None:
+                    tag = soup.select_one('body > div > div.middleWrap > div > div.mLeftWrap > div.articleDiv')
+                    if tag == None:
                         self.delete(url_count - fail_count)
                         fail_count += 1
                     else:
-                        self.news_main_text.append(self.preprocess(soup.select_one('body > div > div.middleWrap > div > div.mLeftWrap > div.articleDiv').get_text().replace('\n', ' ').replace('\t', ' ')))
+                        self.news_main_text.append(self.preprocess(tag.text))
                 else:
-                    if soup.select_one('#atic_txt1')  == None:
+                    tag = soup.select_one('#atic_txt1')
+                    if tag == None:
                         self.delete(url_count - fail_count)
                         fail_count += 1
                     else:
-                        self.news_main_text.append(self.preprocess(soup.select_one('#atic_txt1').get_text().replace('\n', ' ').replace('\t', ' ')))
+                        self.news_main_text.append(self.preprocess(tag.text))
             elif '세계일보' in self.news_press[url_count - fail_count]:
-                if soup.select_one('#article_txt > article')  == None:
+                tag = soup.select_one('#article_txt > article')
+                if tag == None:
                         self.delete(url_count - fail_count)
                         fail_count += 1
                 else:
-                    self.news_main_text.append(self.preprocess(soup.select_one('#article_txt > article').get_text().replace('\n', ' ').replace('\t', ' ')))
+                    self.news_main_text.append(self.preprocess(tag.text))
             #elif '조선일보' in self.news_press[url_count - fail_count]:
             #    self.news_main_text.append(self.preprocess(soup.select_one('#articleBody').get_text()))
             elif '중앙일보' in self.news_press[url_count - fail_count]:
-                if soup.select_one('#article_body')  == None:
+                tag = soup.select_one('#article_body')
+                if tag == None:
                         self.delete(url_count - fail_count)
                         fail_count += 1
                 else:
-                    self.news_main_text.append(self.preprocess(soup.select_one('#article_body').get_text().replace('\n', ' ').replace('\t', ' ')))
+                    self.news_main_text.append(self.preprocess(tag.text))
             elif '한겨레' in self.news_press[url_count - fail_count]:
-                    if soup.select_one('div.article-text > div > div.text') == None:
-                        self.delete(url_count - fail_count)
-                        fail_count += 1
-                    else :
-                        self.news_main_text.append(self.preprocess(soup.select_one('div.article-text > div > div.text').get_text().replace('\n', ' ').replace('\t', ' ')))
+                tag = soup.select_one('div.article-text > div > div.text')
+                if tag == None:
+                    self.delete(url_count - fail_count)
+                    fail_count += 1
+                else :
+                    self.news_main_text.append(self.preprocess(tag.text))
             elif '한국일보' in self.news_press[url_count - fail_count]:
-                if soup.select_one('body > div.wrap > div.container.end > div > div > div > p')  == None:
+                tag = soup.select_one('body > div.wrap > div.container.end > div > div > div > p')
+                if tag  == None:
                         self.delete(url_count - fail_count)
                         fail_count += 1
                 else:
                     text = ""
                     result_set = soup.select('body > div.wrap > div.container.end > div > div > div > p')
                     for p in result_set:
-                       text = text + p.get_text()
+                       text = text + p.text   
                     self.news_main_text.append(self.preprocess(text))
 
     def save_data(self, date_start, date_end):    # 크롤한 정보들 CSV로 저장
@@ -251,7 +275,9 @@ if __name__ == "__main__":
     date_start = str(input('시작 날짜 입력 ex) 20200905 : '))
     date_end = str(input('끝 날짜 입력 ex) 20200909 : '))
 
+    #print(datetime.datetime.now())
     Crawler = Big_Kinds_Crawler()
     Crawler.crawl_news_url(date_start, date_end)
     Crawler.crawl_news_text()
     Crawler.save_data(date_start, date_end)
+    #print(datetime.datetime.now())
