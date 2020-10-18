@@ -28,7 +28,7 @@ class Big_Kinds_Crawler(object):
         del self.news_url[url_count]
         del self.news_date[url_count]
 
-    def crawl_news_url(self, date_start, date_end):   # 빅카인즈에서 뉴스별 url, 언론사, 헤드라인 크롤
+    def crawl_news_url(self, date_start, date_end):   # 빅카인즈에서 뉴스별 url, 언론사, 헤드라인, 날짜, 카테고리 크롤
 
         driver = webdriver.Chrome('/Users/manda/OneDrive/바탕 화면/Utilities/chromedriver_win32/chromedriver')
         driver.implicitly_wait(3)
