@@ -58,15 +58,15 @@ class Big_Kinds_Crawler(object):
         driver.find_element_by_id('provider-filter-btn').click()    # 언론사 버튼  
         #driver.find_element_by_id('중앙지').click()    # 중앙지 체크박스
         #driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(1) > div > button:nth-child(1)').click()    # 경향
-        #driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(2)').click()    # 국민
-        #driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(3)').click()    # 내일
-        #driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(4)').click()    # 동아
-        #driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(5)').click()    # 문화
-        #driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(6)').click()    # 서울
-        #driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(7)').click()    # 세계
+        driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(2)').click()    # 국민
+        driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(3)').click()    # 내일
+        driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(4)').click()    # 동아
+        driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(5)').click()    # 문화
+        driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(6)').click()    # 서울
+        driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(7)').click()    # 세계
         #driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(8)').click()    # 조선
-        #driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(9)').click()    # 중앙
-        #driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(10)').click()   # 한겨레
+        driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(9)').click()    # 중앙
+        driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(10)').click()   # 한겨레
         driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(11)').click()   # 한국
 
         driver.implicitly_wait(1)
