@@ -16,7 +16,7 @@ class Big_Kinds_Crawler(object):
 
     @staticmethod
     def preprocess(text):
-        text = re.sub('<.+?>|&nbsp;|br|⊙|※|▲|◆|▶|■|○|△|□|  ', '', str(text))    # <> 안 내용, &nbsp;(개행) 제거
+        text = re.sub('<.+?>|&nbsp;|br|⊙|※|▲|◆|▶|■|○|△|□|  ', '', str(text))
         text = text.replace("\n", "")
         text = text.strip()
         return text
