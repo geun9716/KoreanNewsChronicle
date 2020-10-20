@@ -276,7 +276,12 @@ class Big_Kinds_Crawler(object):
         writer = csv.writer(file)
         writer.writerow(["date", "category", "headline", "url", "text"])
         for l in range(0, len(self.news_url)):
-            writer.writerow([self.news_date[l], self.news_category[l], self.news_headline[l], self.news_url[l], self.news_main_text[l]])
+            str_category = ''
+            for category in self.news_category[l]:
+                if category != self.news_category[l][0]:
+                    str_category += ','
+                str_category += category
+            writer.writerow([self.news_date[l], str_category, self.news_headline[l], self.news_url[l], self.news_main_text[l]])
         file.close()
     
 if __name__ == "__main__":
