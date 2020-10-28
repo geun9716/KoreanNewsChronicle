@@ -37,10 +37,10 @@ class Big_Kinds_Crawler(object):
         driver.implicitly_wait(1)
 
         # 팝업 창 닫기
-        html_popup = driver.page_source
+        '''html_popup = driver.page_source
         soup_popup = BeautifulSoup(html_popup, 'html.parser')
         if soup_popup.select('#contents > div.popup-container') != None:
-            driver.find_element_by_css_selector('div.popup-footer > div > div > button').click()
+            driver.find_element_by_css_selector('div.popup-footer > div > div > button').click()'''
             
         # 기간 설정
         driver.find_element_by_id('date-filter-btn').click()    # 기간 버튼
