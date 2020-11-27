@@ -31,7 +31,7 @@ print(stopword)
 filename="datas.txt"  #파일 경로
 file = open(filename, 'r', encoding="UTF-8")
 kiwi=Kiwi()
-# kiwi.extract_add_words(reader.read)
+kiwi.extract_add_words(reader.read)
 kiwi.prepare()
 stopwords = set(stopword)
 
@@ -50,7 +50,7 @@ def tokenize(sent): # 파일의 라인을 분석할 tokenize 함수
 #min_df는 단어의 최서 문헌 빈도수, 출현한 문헌 숫자수 의미
 #tw는 용어 가중치 기법으로, ONE, IDF, PMI를 사용가능, ONE 보다는 PMI나 IDF 둘중 하나 사용 
 
-file = open("20200101-20200131_topic.csv", "w", encoding='utf-8', newline = '')
+file = open("20200101-20200131_topic_txt.csv", "w", encoding='utf-8', newline = '')
 writer = csv.writer(file)
 writer.writerow(['index', 'topics'])
 for i, line in enumerate(open(filename, encoding='utf-8')): #해당 경로의 파일을 받아와 한 라인씩 model에 추가
