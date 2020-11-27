@@ -33,6 +33,7 @@ def crawl_news_text(news_press, news_category, news_headline, news_url, news_dat
     # print('url : ' + news_url[0])
     # print('date : ' + news_date[0])
     for url_count in range(0, len(news_url)): # 빅카인즈에서 긁어온 url 수만큼 반
+        time.sleep(1)
         url_html = requests.get(news_url[url_count - fail_count]).content
         soup = BeautifulSoup(url_html, 'html.parser')
         #print(self.news_url[url_count - fail_count])
@@ -175,7 +176,7 @@ def work(id, filename, news_press, news_category, news_headline, news_url, news_
     finish = datetime.datetime.now()
     print(id, finish - start)
 if __name__ == "__main__":
-    filename = "201903.csv"
+    filename = "201908.csv"
     news_press = []
     news_category = []
     news_headline = []
@@ -212,9 +213,9 @@ if __name__ == "__main__":
         if(j == 5000):
             print('divide!!')
             process_count = process_count + 1
-            #if process_count == 3:
-            p = Process(target = work, args = (process_count, filename, press_list, category_list, headline_list, url_list, date_list))
-            p.start()
+            if process_count == 5 or process_count == 4:
+                p = Process(target = work, args = (process_count, filename, press_list, category_list, headline_list, url_list, date_list))
+                p.start()
             press_list.clear()
             category_list.clear()
             headline_list.clear()
