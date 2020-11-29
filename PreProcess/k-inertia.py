@@ -7,7 +7,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib import style
 
-df = pd.read_csv('C:/Users/manda/OneDrive/바탕 화면/KoreanNewsChronicle/PreProcess/20190101-20190131_topic.csv')
+df = pd.read_csv('20190101-20190131_topic.csv')
 
 # topic이 없는 행 삭제
 s = df['topics'].dropna()
@@ -22,9 +22,9 @@ X = vectorizer.fit_transform(content)
 X = normalize(X)
 
 # k-means 알고리즘 적용
-print("waiting for KMeans")
 sse = []    # 오차 제곱 합
-for i in range(100, 110):   # k 계수 range 바꿔서 쓰기
+for i in range(10, 200):   # k 계수 range 바꿔서 쓰기
+    print("waiting for KMeans : ", i)
     km = KMeans(n_clusters=i, init='k-means++')
     km.fit(X)
     sse.append(km.inertia_)
