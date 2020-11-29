@@ -1,6 +1,4 @@
-import tomotopy as tp
 import csv
-
 import sys
 import io
 import re # 정규표현식 패키지
@@ -15,7 +13,7 @@ class Reader:
         if id == 0: self.file.seek(0)
         return self.file.readline()
 
-reader = Reader('datas.txt')
+reader = Reader('201901.txt')
 
 file = open("한국어불용어100.txt", 'r', encoding="utf-8")
 stopword=[]
@@ -28,7 +26,7 @@ while True:
         stopword.append(wordlist[0])
 
 print(stopword)
-filename="datas.txt"  #파일 경로
+filename="201901.txt"  #파일 경로
 file = open(filename, 'r', encoding="UTF-8")
 kiwi=Kiwi()
 kiwi.extract_add_words(reader.read)
@@ -40,7 +38,7 @@ def tokenize(sent): # 파일의 라인을 분석할 tokenize 함수
     res, score = kiwi.analyze(sent)[0] # 첫번째 결과를 사용한다, 분석할때 나오는 결과에서 단어만 추출
     return [word
             for word, tag, _, _ in res
-            if tag.startswith('N') and word not in stopwords] #불용어사전 적용
+                if tag.startswith('N') and word not in stopwords] #불용어사전 적용
 
 
 #LDA 모델을 적용해서 토픽 추출, k는 topic 개수
