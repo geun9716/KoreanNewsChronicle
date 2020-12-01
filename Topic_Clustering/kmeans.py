@@ -5,7 +5,7 @@ from sklearn.cluster import KMeans
 import csv
 import math
 
-filename = "201901.csv"
+filename = "../Data/1_201902.csv"
 news_press = []
 news_category = []
 news_headline = []
@@ -29,7 +29,7 @@ del news_headline[0]
 del news_url[0]
 del news_date[0]
 del news_text[0]
-df = pd.read_csv('20190101-20190131_topic.csv')
+df = pd.read_csv('1_201902.csv')
 news_topic = df['topics'].tolist()
 
 j = 0
@@ -47,7 +47,7 @@ for i in range(0, len(news_press), 1):
     j = j + 1
 # 군집화 할 그룹의 갯수 정의
 
-n_clusters = 100
+n_clusters = 170
 
 s = df['topics'].dropna()
 df = s.to_frame()
@@ -71,4 +71,4 @@ l = df['labels'].tolist()
 # 1번 군집 출력
 for i in range(0, len(news_topic), 1):
     if(l[i] == 1):
-        print(l[i], news_headline[i])
+        print(l[i], news_headline[i],'\t=>\t', news_topic[i])
