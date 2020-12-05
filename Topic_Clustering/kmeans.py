@@ -8,7 +8,7 @@ import math
 # 11줄 filename, 36줄 df = pd.read_csv, 75줄 file_write = open() 파일명 바꿔쓰기
 # 54줄 n_clusters k 계수 바꿔쓰기
 
-filename = "C:/Users/manda/OneDrive/바탕 화면/KoreanNewsChronicle/Data/201902.csv"
+filename = "201901.csv"
 news_press = []
 news_category = []
 news_headline = []
@@ -33,7 +33,7 @@ del news_date[0]
 del news_text[0]
 f.close()
 
-df = pd.read_csv('C:/Users/manda/OneDrive/바탕 화면/KoreanNewsChronicle/Topic_Clustering/201902_topic.csv')
+df = pd.read_csv(filename)
 news_topic = df['topics'].tolist()
 
 j = 0
@@ -51,7 +51,7 @@ for i in range(0, len(news_press), 1):
     j = j + 1
 
 # 군집화 할 그룹의 갯수 정의
-n_clusters = 400
+n_clusters = 500
 
 s = df['topics'].dropna()
 df = s.to_frame()
@@ -72,7 +72,7 @@ df['labels'] = labels
 
 l = df['labels'].tolist()
 
-file_write = open("201902_clustered_" + str(n_clusters) + ".csv",'w', encoding='utf-8', newline = '')
+file_write = open("201901_clustered_" + str(n_clusters) + ".csv",'w', encoding='utf-8', newline = '')
 writer = csv.writer(file_write)
 writer.writerow(["cluster_number", "date", "press", "category", "headline", "topic", "url", "text"])
 for i in range(0, len(news_topic), 1):
