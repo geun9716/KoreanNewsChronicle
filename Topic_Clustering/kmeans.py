@@ -47,7 +47,7 @@ for i in range(0, len(news_press), 1):
     j = j + 1
 # 군집화 할 그룹의 갯수 정의
 
-n_clusters = 170
+n_clusters = 400
 
 s = df['topics'].dropna()
 df = s.to_frame()
