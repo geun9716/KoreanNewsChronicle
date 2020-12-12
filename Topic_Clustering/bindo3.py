@@ -46,6 +46,7 @@ for j in range(0,cluster_num-1):
     check3=""
     if(len(count)>1):
         check2=count[1][0]
+        check3=count[2][0]
 
     count_match=0
 
