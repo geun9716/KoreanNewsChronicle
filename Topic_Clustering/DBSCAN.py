@@ -11,7 +11,7 @@ import math
 from collections import Counter
 import matplotlib.pyplot as plt
 
-df=pd.read_csv('C:/Users/geun/KoreanNewsChronicle/Topic_Clustering/201901.csv',encoding='utf-8')
+df=pd.read_csv('C:/Users/geun/KoreanNewsChronicle/Topic_Abstract/Data/201901.csv',encoding='utf-8')
 
 # 결측지 행 제거 후 topics에 있는 것을 추출
 s = df.dropna()
@@ -23,12 +23,12 @@ X = vectorizer.fit_transform(news_topic)
 
 X = normalize(X)
 
-neigh = NearestNeighbors(n_neighbors=2)
-nbrs = neigh.fit(X)
-distances, indices = nbrs.kneighbors(X)
+# neigh = NearestNeighbors(n_neighbors=2)
+# nbrs = neigh.fit(X)
+# distances, indices = nbrs.kneighbors(X)
 
 
-m = DBSCAN(eps=0.5, min_samples = 50)
+m = DBSCAN(eps=0.7, min_samples = 10)
 
 m.fit(X)
 
@@ -41,6 +41,9 @@ hot_topic = dict(hot_topic_index)
 
 print(hot_topic)
 
+index = []
+for row in s['labels']:
+    index.append(hot_topic[row])
 
-
-s.sort_values(by='labels', ascending=False).to_csv('201901_cluster_DBSCAN.csv', index=False, header=True,encoding="utf-8-sig")
+s['cnt'] = index
+s.sort_values(by='cnt', ascending=False).to_csv('./Topic_Clustering/201901_cluster_DBSCAN.csv', index=False, header=True,encoding="utf-8-sig")
