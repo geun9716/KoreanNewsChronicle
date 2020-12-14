@@ -51,15 +51,10 @@ for j in range(0,cluster_num-1):
 
     count_match=0
 
-    if(result>=0.9 and cluster_count>1):
+    if(result>=0.88 and cluster_count>1):
 
-        for i in range(0,index.size):
-            if(index[i]==j):
-                if(topics[i].find(check2)>-1 ):
-                    count_match=count_match+1
-
-
-        if(count_match==cluster_count):
+            if(check1==' 지난해'):
+                continue
             temp=check1+","+check2+","+check3
             print(str(j)+":"+count[0][0] + ",[나온 횟수 :"+str(count[0][1]) + "]," +"[cluster 개수 :"+ str(cluster_count)+"]" + ", [확률 : "+str(result)+"]")
             lista.append(j)

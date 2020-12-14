@@ -6,11 +6,11 @@ from pandas import Series, DataFrame
 
 cluster_num=500
 
-filename = "201901_clustered_500.csv"
+filename = "201901_cluster500.csv"
 file = pd.read_csv(filename,engine='python')
 
-index=file['cluster_number']
-topics=file['topic']
+index=file['labels']
+topics=file['topics']
 
 
 
@@ -45,7 +45,7 @@ for j in range(0,cluster_num-1):
         listb.append(cluster_count)
 
 df = pd.DataFrame([ x for x in zip(lista,listb)])
-df.to_csv("clusters.csv", mode='w')
+df.to_csv("clusters3.csv", mode='w')
 
 #나온 csv는 정렬해서 확인해본 결과 맘에 안듦. 일단 왼쪽순으로 index, cluster 파일 index, cluster 개수
         
