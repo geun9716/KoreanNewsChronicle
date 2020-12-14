@@ -10,9 +10,9 @@ df.dropna()
 
 for topic in df['topics']:
     if type(topic) == str:
-        topics.extend(topic.split(','))
+        topics.extend(topic.split(', '))
 
-hot_topic_index = Counter(topics).most_common(20)
+hot_topic_index = Counter(topics).most_common(100)
 hot_topic = dict(hot_topic_index)
 
 print(hot_topic)
