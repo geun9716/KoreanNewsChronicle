@@ -28,7 +28,7 @@ for index, row in df.iterrows():        #토픽이 한개인 기사 제거
 
 print('토픽이 한개밖에 없는 기사 제거후 기사수 : ' + str(len(df)))
 
-stopword = ['A씨', '만', '억', '조']
+stopword = ['A씨', '만', '억', '조', '차', '그', '시', '대', '손', '양', '위', '분', '성', '측', '안', '곳']
 
 for index, row in df.iterrows():
     topic = row['topics'].split(', ')
