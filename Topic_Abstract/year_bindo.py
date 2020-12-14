@@ -3,16 +3,11 @@ import pandas as pd
 import sys
 from collections import Counter
 
-df = pd.read_csv("./Topic_Abstract/Data/2019.csv", encoding="utf-8")
+df = pd.read_csv("2019.csv", encoding="utf-8")
 topics = []
 
-df.dropna()
-
-for topic in df['topics']:
-    if type(topic) == str:
-        topics.extend(topic.split(', '))
-
-hot_topic_index = Counter(topics).most_common(100)
+hot_topic_index = Counter(df['cnt']).most_common()
 hot_topic = dict(hot_topic_index)
 
 print(hot_topic)
+print(len(hot_topic))
