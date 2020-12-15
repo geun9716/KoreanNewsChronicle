@@ -1,4 +1,3 @@
-#-*- coding: euc-kr -*-
 from selenium import webdriver
 from bs4 import BeautifulSoup
 import time
@@ -8,16 +7,16 @@ import csv
 
 class Big_Kinds_Crawler(object):
     def __init__(self):
-        self.news_press = [] # ¾ğ·Ğ»ç
-        self.news_category = [] # ´º½º Ä«Å×°í¸®
-        self.news_headline = [] # ´º½º Çìµå¶óÀÎ
-        self.news_url = []  # ´º½º url
-        self.news_main_text = []    # ´º½º º»¹®
-        self.news_date = []  # ´º½º ³¯Â¥
+        self.news_press = [] # ì–¸ë¡ ì‚¬
+        self.news_category = [] # ë‰´ìŠ¤ ì¹´í…Œê³ ë¦¬
+        self.news_headline = [] # ë‰´ìŠ¤ í—¤ë“œë¼ì¸
+        self.news_url = []  # ë‰´ìŠ¤ url
+        self.news_main_text = []    # ë‰´ìŠ¤ ë³¸ë¬¸
+        self.news_date = []  # ë‰´ìŠ¤ ë‚ ì§œ
 
     @staticmethod
     def preprocess(text):
-        text = re.sub('<.+?>|&nbsp;|br|¢Á|¡Ø|¡ã|¡ß|¢º|¡á|¡Û|¡â|¡à|  ', '', str(text))
+        text = re.sub('<.+?>|&nbsp;|br|âŠ™|â€»|â–²|â—†|â–¶|â– |â—‹|â–³|â–¡|  ', '', str(text))
         text = text.replace("\n", "")
         text = text.strip()
         return text
@@ -29,95 +28,95 @@ class Big_Kinds_Crawler(object):
         del self.news_url[url_count]
         del self.news_date[url_count]
 
-    def crawl_news_url(self, date_start, date_end):   # ºòÄ«ÀÎÁî¿¡¼­ ´º½ºº° url, ¾ğ·Ğ»ç, Çìµå¶óÀÎ, ³¯Â¥, Ä«Å×°í¸® Å©·Ñ
+    def crawl_news_url(self, date_start, date_end):   # ë¹…ì¹´ì¸ì¦ˆì—ì„œ ë‰´ìŠ¤ë³„ url, ì–¸ë¡ ì‚¬, í—¤ë“œë¼ì¸, ë‚ ì§œ, ì¹´í…Œê³ ë¦¬ í¬ë¡¤
 
-        driver = webdriver.Chrome('/Users/geun/KoreanNewsChronicle/Crawling/chromedriver')
+        driver = webdriver.Chrome('/Users/manda/OneDrive/ë°”íƒ• í™”ë©´/Utilities/chromedriver_win32/chromedriver')
         driver.implicitly_wait(3)
         driver.get('https://www.bigkinds.or.kr/')
 
         driver.implicitly_wait(1)
 
-        # ÆË¾÷ Ã¢ ´İ±â
+        # íŒì—… ì°½ ë‹«ê¸°
         '''html_popup = driver.page_source
         soup_popup = BeautifulSoup(html_popup, 'html.parser')
         if soup_popup.select('#contents > div.popup-container') != None:
             driver.find_element_by_css_selector('div.popup-footer > div > div > button').click()'''
             
-        # ±â°£ ¼³Á¤
-        driver.find_element_by_id('date-filter-btn').click()    # ±â°£ ¹öÆ°
-        #driver.find_element_by_css_selector('#date-filter-div > div > div:nth-child(1) > button:nth-child(1)').click() # 1ÀÏ ¹öÆ°
-        #driver.find_element_by_css_selector('#date-filter-div > div > div:nth-child(1) > button:nth-child(2)').click() # 1ÁÖ ¹öÆ°
-        #driver.find_element_by_css_selector('#date-filter-div > div > div:nth-child(1) > button:nth-child(3)').click() # 1°³¿ù ¹öÆ°
-        #driver.find_element_by_css_selector('#date-filter-div > div > div:nth-child(1) > button:nth-child(4)').click() # 3°³¿ù ¹öÆ°
-        #driver.find_element_by_css_selector('#date-filter-div > div > div:nth-child(1) > button:nth-child(5)').click() # 6°³¿ù ¹öÆ°
-        #driver.find_element_by_css_selector('#date-filter-div > div > div:nth-child(1) > button:nth-child(6)').click() # 1³â ¹öÆ°
-        driver.find_element_by_id('search-begin-date').send_keys('\b\b\b\b\b\b\b\b\b\b' + date_start[0:4] + '-' + date_start[4:6] + '-' + date_start[6:]) # ½ÃÀÛ ³¯Â¥ ÀÔ·Â
-        driver.find_element_by_id('search-end-date').send_keys('\b\b\b\b\b\b\b\b\b\b' + date_end[0:4] + '-' + date_end[4:6] + '-' + date_end[6:])   # ³¡ ³¯Â¥ ÀÔ·Â
-        driver.find_element_by_id('date-confirm-btn').click()   # ±â°£ Àû¿ë ¹öÆ°
+        # ê¸°ê°„ ì„¤ì •
+        driver.find_element_by_id('date-filter-btn').click()    # ê¸°ê°„ ë²„íŠ¼
+        #driver.find_element_by_css_selector('#date-filter-div > div > div:nth-child(1) > button:nth-child(1)').click() # 1ì¼ ë²„íŠ¼
+        #driver.find_element_by_css_selector('#date-filter-div > div > div:nth-child(1) > button:nth-child(2)').click() # 1ì£¼ ë²„íŠ¼
+        #driver.find_element_by_css_selector('#date-filter-div > div > div:nth-child(1) > button:nth-child(3)').click() # 1ê°œì›” ë²„íŠ¼
+        #driver.find_element_by_css_selector('#date-filter-div > div > div:nth-child(1) > button:nth-child(4)').click() # 3ê°œì›” ë²„íŠ¼
+        #driver.find_element_by_css_selector('#date-filter-div > div > div:nth-child(1) > button:nth-child(5)').click() # 6ê°œì›” ë²„íŠ¼
+        #driver.find_element_by_css_selector('#date-filter-div > div > div:nth-child(1) > button:nth-child(6)').click() # 1ë…„ ë²„íŠ¼
+        driver.find_element_by_id('search-begin-date').send_keys('\b\b\b\b\b\b\b\b\b\b' + date_start[0:4] + '-' + date_start[4:6] + '-' + date_start[6:]) # ì‹œì‘ ë‚ ì§œ ì…ë ¥
+        driver.find_element_by_id('search-end-date').send_keys('\b\b\b\b\b\b\b\b\b\b' + date_end[0:4] + '-' + date_end[4:6] + '-' + date_end[6:])   # ë ë‚ ì§œ ì…ë ¥
+        driver.find_element_by_id('date-confirm-btn').click()   # ê¸°ê°„ ì ìš© ë²„íŠ¼
 
-        # ¾ğ·Ğ»ç ¼³Á¤
-        driver.find_element_by_id('provider-filter-btn').click()    # ¾ğ·Ğ»ç ¹öÆ°  
-        #driver.find_element_by_id('Áß¾ÓÁö').click()    # Áß¾ÓÁö Ã¼Å©¹Ú½º
-        #driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(1) > div > button:nth-child(1)').click()    # °æÇâ
-        driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(2)').click()    # ±¹¹Î
-        driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(3)').click()    # ³»ÀÏ
-        driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(4)').click()    # µ¿¾Æ
-        driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(5)').click()    # ¹®È­
-        driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(6)').click()    # ¼­¿ï
-        driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(7)').click()    # ¼¼°è
-        #driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(8)').click()    # Á¶¼±
-        driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(9)').click()    # Áß¾Ó
-        driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(10)').click()   # ÇÑ°Ü·¹
-        driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(11)').click()   # ÇÑ±¹
+        # ì–¸ë¡ ì‚¬ ì„¤ì •
+        driver.find_element_by_id('provider-filter-btn').click()    # ì–¸ë¡ ì‚¬ ë²„íŠ¼  
+        #driver.find_element_by_id('ì¤‘ì•™ì§€').click()    # ì¤‘ì•™ì§€ ì²´í¬ë°•ìŠ¤
+        #driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(1) > div > button:nth-child(1)').click()    # ê²½í–¥
+        driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(2)').click()    # êµ­ë¯¼
+        driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(3)').click()    # ë‚´ì¼
+        driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(4)').click()    # ë™ì•„
+        driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(5)').click()    # ë¬¸í™”
+        driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(6)').click()    # ì„œìš¸
+        driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(7)').click()    # ì„¸ê³„
+        #driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(8)').click()    # ì¡°ì„ 
+        driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(9)').click()    # ì¤‘ì•™
+        driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(10)').click()   # í•œê²¨ë ˆ
+        driver.find_element_by_css_selector('#providers-wrap > div:nth-child(3) > div:nth-child(2) > div > button:nth-child(11)').click()   # í•œêµ­
 
         driver.implicitly_wait(1)
 
-        # Ä«Å×°í¸® ¼³Á¤
-        driver.find_element_by_id('category-filter-btn').click()    # Ä«Å×°í¸® ¹öÆ°
-        driver.find_element_by_css_selector('#category-tree-wrap > ul > li:nth-child(1) > div > span:nth-child(3)').click() # Á¤Ä¡
-        driver.find_element_by_css_selector('#category-tree-wrap > ul > li:nth-child(2) > div > span:nth-child(3)').click() # °æÁ¦
-        driver.find_element_by_css_selector('#category-tree-wrap > ul > li:nth-child(3) > div > span:nth-child(3)').click() # »çÈ¸
-        #driver.find_element_by_css_selector('#category-tree-wrap > ul > li:nth-child(4) > div > span:nth-child(3)').click() # ¹®È­
-        driver.find_element_by_css_selector('#category-tree-wrap > ul > li:nth-child(5) > div > span:nth-child(3)').click() # ±¹Á¦
-        #driver.find_element_by_css_selector('#category-tree-wrap > ul > li:nth-child(6) > div > span:nth-child(3)').click() # Áö¿ª
-        #driver.find_element_by_css_selector('#category-tree-wrap > ul > li:nth-child(7) > div > span:nth-child(3)').click() # ½ºÆ÷Ã÷
-        #driver.find_element_by_css_selector('#category-tree-wrap > ul > li:nth-child(8) > div > span:nth-child(3)').click() # IT_°úÇĞ
+        # ì¹´í…Œê³ ë¦¬ ì„¤ì •
+        driver.find_element_by_id('category-filter-btn').click()    # ì¹´í…Œê³ ë¦¬ ë²„íŠ¼
+        driver.find_element_by_css_selector('#category-tree-wrap > ul > li:nth-child(1) > div > span:nth-child(3)').click() # ì •ì¹˜
+        driver.find_element_by_css_selector('#category-tree-wrap > ul > li:nth-child(2) > div > span:nth-child(3)').click() # ê²½ì œ
+        driver.find_element_by_css_selector('#category-tree-wrap > ul > li:nth-child(3) > div > span:nth-child(3)').click() # ì‚¬íšŒ
+        #driver.find_element_by_css_selector('#category-tree-wrap > ul > li:nth-child(4) > div > span:nth-child(3)').click() # ë¬¸í™”
+        driver.find_element_by_css_selector('#category-tree-wrap > ul > li:nth-child(5) > div > span:nth-child(3)').click() # êµ­ì œ
+        #driver.find_element_by_css_selector('#category-tree-wrap > ul > li:nth-child(6) > div > span:nth-child(3)').click() # ì§€ì—­
+        #driver.find_element_by_css_selector('#category-tree-wrap > ul > li:nth-child(7) > div > span:nth-child(3)').click() # ìŠ¤í¬ì¸ 
+        #driver.find_element_by_css_selector('#category-tree-wrap > ul > li:nth-child(8) > div > span:nth-child(3)').click() # IT_ê³¼í•™
 
-        driver.find_element_by_css_selector('#news-search-form > div > div > div > div.input-group.main-search__form > span > button').click() # °Ë»ö ¹öÆ°
+        driver.find_element_by_css_selector('#news-search-form > div > div > div > div.input-group.main-search__form > span > button').click() # ê²€ìƒ‰ ë²„íŠ¼
 
         driver.implicitly_wait(3)
 
-        driver.find_element_by_css_selector('#filter-tm-use').click()   #   ÀÎ»ç, ºÎ°í, µ¿Á¤, Æ÷Åä Á¦¿Ü
+        driver.find_element_by_css_selector('#filter-tm-use').click()   #   ì¸ì‚¬, ë¶€ê³ , ë™ì •, í¬í†  ì œì™¸
 
         time.sleep(1)
 
-        driver.find_element_by_css_selector('#select1 > option:nth-child(3)').click()   # °ú°Å¼ø
+        driver.find_element_by_css_selector('#select1 > option:nth-child(3)').click()   # ê³¼ê±°ìˆœ
 
         time.sleep(1)
 
-        driver.find_element_by_css_selector('#select2 > option:nth-child(4)').click()   # 100°Ç¾¿ º¸±â
+        driver.find_element_by_css_selector('#select2 > option:nth-child(4)').click()   # 100ê±´ì”© ë³´ê¸°
 
         time. sleep(1)
 
         html = driver.page_source
         soup = BeautifulSoup(html, 'html.parser')
 
-        total_count = soup.select_one('#total-news-cnt').get_text().replace(',', '') # ³¯Â¥ ¹üÀ§ ³» ±â»ç °³¼ö
-        page_count = (int(total_count) // 100)  # ±â»ç °³¼ö // 100°Ç¾¿ º¸±â = ÆäÀÌÁö
+        total_count = soup.select_one('#total-news-cnt').get_text().replace(',', '') # ë‚ ì§œ ë²”ìœ„ ë‚´ ê¸°ì‚¬ ê°œìˆ˜
+        page_count = (int(total_count) // 100)  # ê¸°ì‚¬ ê°œìˆ˜ // 100ê±´ì”© ë³´ê¸° = í˜ì´ì§€
         if int(total_count) % 100 != 0:
             page_count += 1
         
-        for page in range(1, page_count + 1):   # 1~¸¶Áö¸· ÆäÀÌÁö
-            # ÆäÀÌÁö Ã³¸®
+        for page in range(1, page_count + 1):   # 1~ë§ˆì§€ë§‰ í˜ì´ì§€
+            # í˜ì´ì§€ ì²˜ë¦¬
             
-            page_click = page % 7   # ÆäÀÌÁö ¹öÆ° 7°³
+            page_click = page % 7   # í˜ì´ì§€ ë²„íŠ¼ 7ê°œ
             if page_click != 1:
                 if page_click == 0:
                     page_click = 7
                 page_click += 2
-                driver.find_element_by_css_selector('#news-results-pagination > ul > li:nth-child(' + str(page_click) + ') > a').click()    # ÆäÀÌÁö Å¬¸¯
+                driver.find_element_by_css_selector('#news-results-pagination > ul > li:nth-child(' + str(page_click) + ') > a').click()    # í˜ì´ì§€ í´ë¦­
             elif (page_click == 1) and (page > 1):
-                driver.find_element_by_css_selector('#news-results-pagination > ul > li:nth-child(10) > a').click()  # ´ÙÀ½ ¸ñ·ÏÀ¸·Î ³Ñ¾î°¡±â Å¬¸¯
+                driver.find_element_by_css_selector('#news-results-pagination > ul > li:nth-child(10) > a').click()  # ë‹¤ìŒ ëª©ë¡ìœ¼ë¡œ ë„˜ì–´ê°€ê¸° í´ë¦­
                 '''if page != page_count:
                     time.sleep(2)
                     driver.find_element_by_css_selector('#news-results-pagination > ul > li:nth-child(3) > a').click()'''
@@ -127,13 +126,13 @@ class Big_Kinds_Crawler(object):
             html = driver.page_source
             soup = BeautifulSoup(html, 'html.parser')
 
-            url = soup.select('#news-results > div > div > div > a')  # ±â»ç url ±Ü±â
-            press = soup.select('#news-results > div > div > div > a') # ¾ğ·Ğ»ç ±Ü±â
-            category = soup.select('#news-results > div > div.news-item__body > div.news-item__meta > span.news-item__category') # Ä«Å×°í¸® ±Ü±â
-            headline = soup.select('#news-results > div > div.news-item__body > h4') # ±â»ç Á¦¸ñ ±Ü±â
-            date = soup.select('#news-results > div > div.news-item__body > div.news-item__meta > span.news-item__date') # ³¯Â¥ ±Ü±â
+            url = soup.select('#news-results > div > div > div > a')  # ê¸°ì‚¬ url ê¸ê¸°
+            press = soup.select('#news-results > div > div > div > a') # ì–¸ë¡ ì‚¬ ê¸ê¸°
+            category = soup.select('#news-results > div > div.news-item__body > div.news-item__meta > span.news-item__category') # ì¹´í…Œê³ ë¦¬ ê¸ê¸°
+            headline = soup.select('#news-results > div > div.news-item__body > h4') # ê¸°ì‚¬ ì œëª© ê¸ê¸°
+            date = soup.select('#news-results > div > div.news-item__body > div.news-item__meta > span.news-item__date') # ë‚ ì§œ ê¸ê¸°
 
-            for w in range(0, len(url)):    # url ¼ö¸¸Å­ ¹İº¹
+            for w in range(0, len(url)):    # url ìˆ˜ë§Œí¼ ë°˜ë³µ
                 self.news_url.append(url[w].get('href'))
             for x in range(0, len(press)):
                 self.news_press.append(press[x].text)
@@ -150,30 +149,30 @@ class Big_Kinds_Crawler(object):
                 self.news_date.append(date[y].text.strip())
         driver.close()
 
-    def crawl_news_text(self):  # ±Ü¾î¿Â urlµé µé¾î°¡¼­ ´º½º º»¹® ±Ü±â
-        fail_count = 0  # url¿¡ º»¹® ³»¿ëÀÌ ¾øÀ» ¶§ count
-        for url_count  in range(0, len(self.news_url)): # ºòÄ«ÀÎÁî¿¡¼­ ±Ü¾î¿Â url ¼ö¸¸Å­ ¹İ
+    def crawl_news_text(self):  # ê¸ì–´ì˜¨ urlë“¤ ë“¤ì–´ê°€ì„œ ë‰´ìŠ¤ ë³¸ë¬¸ ê¸ê¸°
+        fail_count = 0  # urlì— ë³¸ë¬¸ ë‚´ìš©ì´ ì—†ì„ ë•Œ count
+        for url_count  in range(0, len(self.news_url)): # ë¹…ì¹´ì¸ì¦ˆì—ì„œ ê¸ì–´ì˜¨ url ìˆ˜ë§Œí¼ ë°˜
             url_html = requests.get(self.news_url[url_count - fail_count]).content
             soup = BeautifulSoup(url_html, 'html.parser')
             #print(self.news_url[url_count - fail_count])
-            # °¢ ±â»çÀÇ ¾ğ·Ğ»ç¿¡ ¸Â°Ô Å©·Ñ
-            #if '°æÇâ½Å¹®' in self.news_press[url_count]:
+            # ê° ê¸°ì‚¬ì˜ ì–¸ë¡ ì‚¬ì— ë§ê²Œ í¬ë¡¤
+            #if 'ê²½í–¥ì‹ ë¬¸' in self.news_press[url_count]:
             #    self.news_main_text.append(self.preprocess(soup.select_one('#articleBody').get_text()))
-            if '±¹¹ÎÀÏº¸' in self.news_press[url_count - fail_count]:
+            if 'êµ­ë¯¼ì¼ë³´' in self.news_press[url_count - fail_count]:
                 tag = soup.select_one('#articleBody')
-                if tag == None:    # url¿¡ º»¹® ³»¿ë ¾øÀ» ¶§
-                    self.delete(url_count - fail_count) # ¸ğµç list¿¡¼­ ÇØ´ç url¿¡ ´ëÇÑ Á¤º¸ »èÁ¦
+                if tag == None:    # urlì— ë³¸ë¬¸ ë‚´ìš© ì—†ì„ ë•Œ
+                    self.delete(url_count - fail_count) # ëª¨ë“  listì—ì„œ í•´ë‹¹ urlì— ëŒ€í•œ ì •ë³´ ì‚­ì œ
                     fail_count += 1
                 else:
                     self.news_main_text.append(self.preprocess(tag.text))
-            elif '³»ÀÏ½Å¹®' in self.news_press[url_count - fail_count]:
+            elif 'ë‚´ì¼ì‹ ë¬¸' in self.news_press[url_count - fail_count]:
                 tag = soup.select_one('#contents > p')
                 if tag == None:
                     self.delete(url_count - fail_count)
                     fail_count += 1
                 else:
                     self.news_main_text.append(self.preprocess(tag.text))
-            elif 'µ¿¾ÆÀÏº¸' in self.news_press[url_count - fail_count]:
+            elif 'ë™ì•„ì¼ë³´' in self.news_press[url_count - fail_count]:
                 tag = soup.select_one('#content > div > div.article_txt')
                 if tag == None:
                     self.delete(url_count - fail_count)
@@ -188,14 +187,14 @@ class Big_Kinds_Crawler(object):
                     for a in tag.select('a'):
                         a.decompose()
                     self.news_main_text.append(self.preprocess(tag.text))
-            elif '¹®È­ÀÏº¸' in self.news_press[url_count - fail_count]:
+            elif 'ë¬¸í™”ì¼ë³´' in self.news_press[url_count - fail_count]:
                 tag = soup.select_one('#NewsAdContent')
                 if  tag == None:
                     self.delete(url_count - fail_count)
                     fail_count += 1
                 else:
                     self.news_main_text.append(self.preprocess(tag.text))
-            elif '¼­¿ï½Å¹®' in self.news_press[url_count - fail_count]:
+            elif 'ì„œìš¸ì‹ ë¬¸' in self.news_press[url_count - fail_count]:
                 if 'go' in self.news_url[url_count - fail_count]:
                     tag = soup.select_one('#article_content')
                     if tag == None:
@@ -231,7 +230,7 @@ class Big_Kinds_Crawler(object):
                         fail_count += 1
                     else:
                         self.news_main_text.append(self.preprocess(tag.text))
-            elif '¼¼°èÀÏº¸' in self.news_press[url_count - fail_count]:
+            elif 'ì„¸ê³„ì¼ë³´' in self.news_press[url_count - fail_count]:
                 tag = soup.select_one('#article_txt > article')
                 if tag == None:
                         self.delete(url_count - fail_count)
@@ -240,9 +239,9 @@ class Big_Kinds_Crawler(object):
                     for figure in tag.select('figure'):
                         figure.decompose()
                     self.news_main_text.append(self.preprocess(tag.text))
-            #elif 'Á¶¼±ÀÏº¸' in self.news_press[url_count - fail_count]:
+            #elif 'ì¡°ì„ ì¼ë³´' in self.news_press[url_count - fail_count]:
             #    self.news_main_text.append(self.preprocess(soup.select_one('#articleBody').get_text()))
-            elif 'Áß¾ÓÀÏº¸' in self.news_press[url_count - fail_count]:
+            elif 'ì¤‘ì•™ì¼ë³´' in self.news_press[url_count - fail_count]:
                 tag = soup.select_one('#article_body')
                 if tag == None:
                         self.delete(url_count - fail_count)
@@ -251,7 +250,7 @@ class Big_Kinds_Crawler(object):
                     for div in tag.select('div'):
                         div.decompose()
                     self.news_main_text.append(self.preprocess(tag.text))
-            elif 'ÇÑ°Ü·¹' in self.news_press[url_count - fail_count]:
+            elif 'í•œê²¨ë ˆ' in self.news_press[url_count - fail_count]:
                 tag = soup.select_one('div.article-text > div > div.text')
                 if tag == None:
                     self.delete(url_count - fail_count)
@@ -260,7 +259,7 @@ class Big_Kinds_Crawler(object):
                     for div in tag.select('div'):
                         div.decompose()
                     self.news_main_text.append(self.preprocess(tag.text))
-            elif 'ÇÑ±¹ÀÏº¸' in self.news_press[url_count - fail_count]:
+            elif 'í•œêµ­ì¼ë³´' in self.news_press[url_count - fail_count]:
                 tag = soup.select_one('body > div.wrap > div.container.end > div > div > div > p')
                 if tag  == None:
                         self.delete(url_count - fail_count)
@@ -270,9 +269,9 @@ class Big_Kinds_Crawler(object):
                     result_set = soup.select('body > div.wrap > div.container.end > div > div > div > p')
                     for p in result_set:
                        text = text + p.text   
-                    self.news_main_text.append(self.preprocess(text).replace('user@hankookilbo.comº¸³»´Â ±â»ç', ''))
+                    self.news_main_text.append(self.preprocess(text).replace('user@hankookilbo.comë³´ë‚´ëŠ” ê¸°ì‚¬', ''))
 
-    def save_data(self, date_start, date_end):    # Å©·ÑÇÑ Á¤º¸µé CSV·Î ÀúÀå
+    def save_data(self, date_start, date_end):    # í¬ë¡¤í•œ ì •ë³´ë“¤ CSVë¡œ ì €ì¥
         file = open(date_start + '-' + date_end + '.csv', 'w', encoding='utf-8', newline = '')
         writer = csv.writer(file)
         writer.writerow(["date", "category", "headline", "url", "text"])
@@ -286,8 +285,8 @@ class Big_Kinds_Crawler(object):
         file.close()
     
 if __name__ == "__main__":
-    date_start = str(input('½ÃÀÛ ³¯Â¥ ÀÔ·Â ex) 20200905 : '))
-    date_end = str(input('³¡ ³¯Â¥ ÀÔ·Â ex) 20200909 : '))
+    date_start = str(input('ì‹œì‘ ë‚ ì§œ ì…ë ¥ ex) 20200905 : '))
+    date_end = str(input('ë ë‚ ì§œ ì…ë ¥ ex) 20200909 : '))
 
     Crawler = Big_Kinds_Crawler()
     Crawler.crawl_news_url(date_start, date_end)
