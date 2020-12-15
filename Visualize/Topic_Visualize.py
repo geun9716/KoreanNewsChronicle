@@ -5,6 +5,8 @@ import pandas as pd
 import sys
 from collections import Counter
 
+lists=[]
+
 df = pd.read_csv("./Visualize/2019.csv", encoding="utf-8")
 
 df.dropna()
@@ -21,16 +23,18 @@ for i in range(1, 13, 1):
                 topics.extend(row['topics'].split(', '))
         if(count >= 40):
             print(i, j)
-            hot_topic_index = Counter(topics).most_common(20)
+            hot_topic_index = Counter(topics).most_common(8)
             hot_topic = dict(hot_topic_index)
+            lists.append(hot_topic)
 
-            print(hot_topic)
             wordcloud = WordCloud(font_path='Visualize/malgun.ttf', background_color='white').generate_from_frequencies(dict(hot_topic))
 
-            plt.figure(figsize=(22,22)) #이미지 사이즈 지정
+            plt.figure(figsize=(30,30)) #이미지 사이즈 지정
             plt.imshow(wordcloud, interpolation='lanczos') #이미지의 부드럽기 정도
             plt.axis('off') #x y 축 숫자 제거
             # plt.show()
             plt.savefig('month_' + str(i) + '_cluster_' + str(j) + '.png')
         elif(count == 0):
             break
+df = pd.DataFrame(lists)
+df.to_csv('2019_wordlist.csv', index=False, header=True,encoding="utf-8-sig")
