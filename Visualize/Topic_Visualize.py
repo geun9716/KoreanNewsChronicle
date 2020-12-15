@@ -7,7 +7,7 @@ from collections import Counter
 
 lists=[]
 
-df = pd.read_csv("./Visualize/2019.csv", encoding="utf-8")
+df = pd.read_csv("2019.csv", encoding="utf-8")
 
 df.dropna()
 for i in range(1, 13, 1):
@@ -23,7 +23,7 @@ for i in range(1, 13, 1):
                 topics.extend(row['topics'].split(', '))
         if(count >= 40):
             print(i, j)
-            hot_topic_index = Counter(topics).most_common(8)
+            hot_topic_index = Counter(topics).most_common(20)
             hot_topic = dict(hot_topic_index)
             lists.append(hot_topic)
 
@@ -36,5 +36,3 @@ for i in range(1, 13, 1):
             plt.savefig('month_' + str(i) + '_cluster_' + str(j) + '.png')
         elif(count == 0):
             break
-df = pd.DataFrame(lists)
-df.to_csv('2019_wordlist.csv', index=False, header=True,encoding="utf-8-sig")
