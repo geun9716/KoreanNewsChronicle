@@ -29,7 +29,7 @@ def tokenize(sent): # 파일의 라인을 분석할 tokenize 함수
 
 doc_nouns_list=['지소미아 한국 미국 종료 정부 결정 미 일본']
 
-
+#코사인 유사도 계산
 def cos_similarity(v1, v2):
     dot_product = np.dot(v1, v2)
     l2_norm = (np.sqrt(sum(np.square(v1))) * np.sqrt(sum(np.square(v2))))
@@ -61,7 +61,7 @@ for i in range(model.k):
     
 
 oasis=' '.join(oasis_topic)
-oasis=oasis+str(' 지소미아')
+
 print("KNC_topic : ",doc_nouns_list[0])
 print("Oasis_topic : ",oasis)
 
