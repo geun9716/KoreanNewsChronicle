@@ -1,33 +1,8 @@
 import numpy as np
-import tomotopy as tp
-from konlpy.utils import pprint
-from kiwipiepy import Kiwi, Option
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-kiwi=Kiwi()
-kiwi.prepare()
 
-
-file = open("한국어불용어100.txt", 'r', encoding="utf-8")
-stopword=[]
-
-while True:
-    line = file.readline()
-    if not line: break
-    wordlist = line.split('\t')
-    if (wordlist[1].startswith('N')):
-        stopword.append(wordlist[0])
-
-stopwords = set(stopword)     
-
-def tokenize(sent): # 파일의 라인을 분석할 tokenize 함수
-    res, score = kiwi.analyze(sent)[0] # 첫번째 결과를 사용한다, 분석할때 나오는 결과에서 단어만 추출
-    return [word
-            for word, tag, _, _ in res
-            if tag.startswith('N') and word not in stopwords] #불용어사전 적용
-
-
-doc_nouns_list=['지소미아 한국 미국 종료 정부 결정 미 일본']
+doc_nouns_list=[]
 
 #코사인 유사도 계산
 def cos_similarity(v1, v2):
@@ -36,36 +11,14 @@ def cos_similarity(v1, v2):
     similarity = dot_product / l2_norm     
     
     return similarity
+cluster_topic = ['도널드트럼프', '북한', '정상회담', '미국', '김정은', '핵', '중국', '협상', '회담', '북미' ,'차' ,'대통령' ,'정상' ,'하노이' ,'대화']
+oasis_topic= ['북한', '정상회담', '미국', '위원장', '대통령', '도널드트럼프', '회담', '김정은', '북미', '북미정상', '협상', '하노이', '한반도', '대화', '정상']
 
-model = tp.LDAModel(k=1, alpha=0.1, eta=0.01, min_cf=2)
-
-filename='test.txt'
-for i, line in enumerate(open(filename, encoding='utf-8')):
-    model.add_doc(tokenize(line)) 
-
-model.train(0) 
-
-for i in range(200):
-    print('Iteration {}\tLL per word: {}'.format(i, model.ll_per_word))
-    model.train(1)
-
-oasis_topic=[]
-
-for i in range(model.k):
-    # 토픽 개수가 총 20개이니, 0~19번까지의 토픽별 상위 단어 10개를 뽑아봅시다.
-    res = model.get_topic_words(i, top_n=7)
-    
-    for w, p in res:
-       oasis_topic.append(w)
-    
-    
-
-oasis=' '.join(oasis_topic)
+doc_nouns_list.append(' '.join(cluster_topic))
+doc_nouns_list.append(' '.join(oasis_topic))
 
 print("KNC_topic : ",doc_nouns_list[0])
-print("Oasis_topic : ",oasis)
-
-doc_nouns_list.append(oasis)
+print("Oasis_topic : ",doc_nouns_list[1])
 
 tfidf_vect_simple = TfidfVectorizer(min_df=1)
 feature_vect_simple = tfidf_vect_simple.fit_transform(doc_nouns_list)
